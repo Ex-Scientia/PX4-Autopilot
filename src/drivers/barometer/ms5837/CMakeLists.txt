@@ -40,7 +40,7 @@ px4_add_module(
 		ms5837_spi.cpp
 		ms5837_i2c.cpp
 		ms5837.cpp
-		ms55837_main.cpp
+		ms5837_main.cpp
 		MS5837.hpp
 	DEPENDS
 		cdev
