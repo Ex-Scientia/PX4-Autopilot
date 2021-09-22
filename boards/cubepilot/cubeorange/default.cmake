@@ -12,7 +12,7 @@ px4_add_board(
 		TEL2:/dev/ttyS1
 		GPS1:/dev/ttyS2
 		# PX4IO:/dev/ttyS3
-		# TEL3:/dev/ttyS4  # connected to ADS-B receiver
+		TEL3:/dev/ttyS4  # connected to ADS-B receiver
 		GPS2:/dev/ttyS5
 	DRIVERS
 		adc/ads1115
@@ -121,12 +121,12 @@ px4_add_board(
 		#fake_imu
 		#fake_magnetometer
 		#fixedwing_control # Tutorial code from https://px4.io/dev/example_fixedwing_control
-		#hello
+		hello
 		#hwtest # Hardware test
 		#matlab_csv_serial
 		#px4_mavlink_debug # Tutorial code from http://dev.px4.io/en/debug/debug_values.html
 		#px4_simple_app # Tutorial code from http://dev.px4.io/en/apps/hello_sky.html
 		#rover_steering_control # Rover example app
-		#uuv_example_app
+		uuv_example_app
 		#work_item
 	)
