@@ -170,14 +170,22 @@ void UUVPOSControl::Run()
 	//vehicle_attitude_s attitude;
 	vehicle_local_position_s vlocal_pos;
 
+  // check vehicle attitude for changes
+  _vehicle_attitude_sub.update(&_vehicle_attitude);
+
+  // check vehicle position for changes
+  _vehicle_local_position_sub.update(&_vehicle_position);
+
 	/* only run controller if local_pos changed */
 	if (_vehicle_local_position_sub.update(&vlocal_pos)) {
 
+    printf("******************* INSIDE FIRST CONTROLLER CONDITIONAL");
 		/* Run geometric attitude controllers if NOT manual mode*/
 		if (!_vcontrol_mode.flag_control_manual_enabled
 		    && _vcontrol_mode.flag_control_attitude_enabled
 		    && _vcontrol_mode.flag_control_rates_enabled) {
 
+      printf("****************** INSIDE SECOND CONDTIONAL");
 			_vehicle_attitude_sub.update(&_vehicle_attitude);//get current vehicle attitude
 			_trajectory_setpoint_sub.update(&_trajectory_setpoint);
 
@@ -193,23 +201,39 @@ void UUVPOSControl::Run()
 			if (_param_stabilization.get() == 0) {
 				pose_controller_6dof(x_pos_des, y_pos_des, z_pos_des,
 						     roll_des, pitch_des, yaw_des, _vehicle_attitude, vlocal_pos);
-
+        printf("***************** INSIDE POSITION CONTROLLER");
 			} else {
+        printf("***************** INSIDE STABILIZATION CONTROLLER");
 				stabilization_controller_6dof(x_pos_des, y_pos_des, z_pos_des,
 							      roll_des, pitch_des, yaw_des, _vehicle_attitude, vlocal_pos);
 			}
 		}
-	}
+  }
 
 	/* Manual Control mode (e.g. gamepad,...) - raw feedthrough no assistance */
 	if (_manual_control_setpoint_sub.update(&_manual_control_setpoint)) {
 		// This should be copied even if not in manual mode. Otherwise, the poll(...) call will keep
 		// returning immediately and this loop will eat up resources.
-		if (_vcontrol_mode.flag_control_manual_enabled && !_vcontrol_mode.flag_control_rates_enabled) {
+		//if (_vcontrol_mode.flag_control_manual_enabled && !_vcontrol_mode.flag_control_rates_enabled)
+    if (_vcontrol_mode.flag_control_manual_enabled) {
 			/* manual/direct control */
-		}
+     // _manual_control_setpoint_s.r //JOYSTICK CONTROL
+     // _vehicle_attitude // VEHICLE LOCAL ATTITUDE		  
+     // _vehicle_position //VEHICLE LOCAL POSITION
 
-	}
+      float z_pos_des = _vehicle_position.z + (_manual_control_setpoint.r * 5);
+       
+      //pose_controller_6dof(_vehicle_position.x, _vehicle_position.y, z_pos_des,
+			//			     0, 0, 0, _vehicle_attitude, _vehicle_position);
+      printf("********* JOYSTICK YAW CONTROL SETPOINT %f\n", double(_manual_control_setpoint.r));
+      printf("********* CURRENT ALTITUDE %f\n", double(_vehicle_position.z));
+      printf("********* TARGET ALTITUDE %f\n\n\n", double(z_pos_des)); 
+      pose_controller_6dof(_vehicle_position.x, _vehicle_position.y, z_pos_des,
+						     0, 0, 0, _vehicle_attitude, _vehicle_position);
+      
+    }
+
+	} 
 
 	/* Only publish if any of the proper modes are enabled */
 	if (_vcontrol_mode.flag_control_manual_enabled ||

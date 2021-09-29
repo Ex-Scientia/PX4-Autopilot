@@ -115,6 +115,7 @@ private:
 	vehicle_attitude_s _vehicle_attitude {}; /**< vehicle attitude */
 	vehicle_local_position_setpoint_s _trajectory_setpoint{}; /**< vehicle position setpoint */
 	vehicle_control_mode_s _vcontrol_mode {}; /**< vehicle control mode */
+  vehicle_local_position_s _vehicle_position {}; /**< vehicle position */
 
 	perf_counter_t	_loop_perf; /**< loop performance counter */
 
