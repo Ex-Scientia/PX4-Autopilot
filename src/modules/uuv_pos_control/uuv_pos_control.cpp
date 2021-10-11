@@ -221,13 +221,13 @@ void UUVPOSControl::Run()
      // _vehicle_position //VEHICLE LOCAL POSITION
       
       //CHANGE 100 TO MAX VALUE IN RANGE FOR METERS IN DEPTH
-      float z_pos_des = _manual_control_setpoint.r * 100;
+      float z_pos_des = _manual_control_setpoint.r * -100;
        
       //pose_controller_6dof(_vehicle_position.x, _vehicle_position.y, z_pos_des,
 			//			     0, 0, 0, _vehicle_attitude, _vehicle_position);
-      //printf("********* JOYSTICK YAW CONTROL SETPOINT %f\n", double(_manual_control_setpoint.r));
-      //printf("********* CURRENT ALTITUDE %f\n", double(_vehicle_position.z));
-      //printf("********* TARGET ALTITUDE %f\n\n\n", double(z_pos_des)); 
+      printf("********* JOYSTICK YAW CONTROL SETPOINT %f\n", double(_manual_control_setpoint.r));
+      printf("********* CURRENT ALTITUDE %f\n", double(_vehicle_position.z));
+      printf("********* TARGET ALTITUDE %f\n\n\n", double(z_pos_des)); 
       pose_controller_6dof(_vehicle_position.x, _vehicle_position.y, z_pos_des,
 						     0, 0, 0, _vehicle_attitude, _vehicle_position);
       
