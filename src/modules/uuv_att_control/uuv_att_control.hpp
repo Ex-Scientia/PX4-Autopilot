@@ -69,6 +69,7 @@
 #include <uORB/topics/vehicle_rates_setpoint.h>
 #include <uORB/topics/vehicle_control_mode.h>
 #include <uORB/topics/actuator_controls.h>
+#include <uORB/topics/vdas_vehicle_status.h>
 #include <uORB/uORB.h>
 
 using matrix::Eulerf;
@@ -101,7 +102,7 @@ private:
 	uORB::Publication<actuator_controls_s> _actuator_controls_pub{ORB_ID(actuator_controls_0)};
 
 	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
-
+	uORB::Subscription _vdas_vehicle_status_sub{ORB_ID(vdas_vehicle_status)}; /**< vdas vehicle status subscription */
 	uORB::Subscription _vehicle_attitude_setpoint_sub{ORB_ID(vehicle_attitude_setpoint)};	/**< vehicle attitude setpoint */
 	uORB::Subscription _vehicle_rates_setpoint_sub{ORB_ID(vehicle_rates_setpoint)}; /**< vehicle bodyrates setpoint subscriber */
 	uORB::Subscription _angular_velocity_sub{ORB_ID(vehicle_angular_velocity)};	/**< vehicle angular velocity subscription */
@@ -115,6 +116,7 @@ private:
 	vehicle_attitude_setpoint_s _attitude_setpoint {}; /**< vehicle attitude setpoint */
 	vehicle_rates_setpoint_s _rates_setpoint {}; /**< vehicle bodyrates setpoint */
 	vehicle_control_mode_s _vcontrol_mode {}; /**< vehicle control mode */
+	vdas_vehicle_status_s _vdas_vehicle_status {}; /**< vdas vehicle status */
 
 	perf_counter_t	_loop_perf; /**< loop performance counter */
 

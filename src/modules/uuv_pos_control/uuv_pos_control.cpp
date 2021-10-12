@@ -231,6 +231,17 @@ void UUVPOSControl::Run()
       pose_controller_6dof(_vehicle_position.x, _vehicle_position.y, z_pos_des,
 						     0, 0, 0, _vehicle_attitude, _vehicle_position);
       
+      // *************************************************************
+      // PUBLISH TO VDAS CUSTOM UORB TOPIC
+      // vdas_vehicle_status_s vdas_vehicle_status = {};
+      // vdas_vehicle_status.timestamp = hrt_absolute_time();
+      // vdas_vehicle_status.vdas_in_fw_mode = true;
+
+      // _vdas_veh_status_pub.publish(vdas_vehicle_status);
+      
+      // printf("********* VDAS PUBLISH IN FW MODE %d\n", vdas_vehicle_status.vdas_in_fw_mode);
+      // *************************************************************
+
     }
 
 	} 

@@ -156,6 +156,7 @@ set(msg_files
 	uavcan_parameter_value.msg
 	ulog_stream.msg
 	ulog_stream_ack.msg
+	vdas_vehicle_status.msg
 	vehicle_acceleration.msg
 	vehicle_actuator_setpoint.msg
 	vehicle_air_data.msg

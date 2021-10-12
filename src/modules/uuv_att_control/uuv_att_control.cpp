@@ -228,7 +228,13 @@ void UUVAttitudeControl::Run()
 	}
 
 	perf_begin(_loop_perf);
-
+ 
+ //*******************************************
+ // SUBSCRIBING TO UORB CUSTOM VDAS MESSAGE
+ // _vdas_vehicle_status_sub.update(&_vdas_vehicle_status);
+ // printf("******************* VDAS SUBSCRIBE IN FW MODE%d\n", _vdas_vehicle_status.vdas_in_fw_mode);
+ //*******************************************
+ 
 	/* check vehicle control mode for changes to publication state */
 	_vcontrol_mode_sub.update(&_vcontrol_mode);
 
