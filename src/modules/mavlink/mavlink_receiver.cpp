@@ -565,6 +565,11 @@ void MavlinkReceiver::handle_message_command_both(mavlink_message_t *msg, const 
 				updated = true;
 			}
 
+			if (PX4_ISFINITE(vehicle_command.param4)) {
+				actuator_controls.control[8] = vehicle_command.param4;
+				updated = true;
+			}
+
 			if (updated) {
 				_actuator_controls_pubs[3].publish(actuator_controls);
 			}

@@ -183,8 +183,8 @@ private:
 	hrt_abstime _last_timestamp_signal{0};
 
 	uint16_t _rc_values_previous[RC_MAX_CHAN_COUNT] {};
-	float _last_manual_control_setpoint[3] {};
-	bool _aux_already_active[3] = {false, false, false};
+	float _last_manual_control_setpoint[4] {};
+	bool _aux_already_active[4] = {false, false, false, false};
 
 	uint8_t _channel_count_previous{0};
 	uint8_t _input_source_previous{input_rc_s::RC_INPUT_SOURCE_UNKNOWN};
