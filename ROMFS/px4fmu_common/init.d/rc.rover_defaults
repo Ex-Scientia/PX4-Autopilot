@@ -14,8 +14,8 @@ param set-default MIS_LTRMIN_ALT 0.01
 param set-default MIS_TAKEOFF_ALT 0.01
 
 param set-default NAV_DLL_ACT 0
-param set-default NAV_ACC_RAD 2
-param set-default NAV_LOITER_RAD 2
+param set-default NAV_ACC_RAD 10
+param set-default NAV_LOITER_RAD 10
 
 # Temporary.
 param set-default NAV_FW_ALT_RAD 1000
@@ -25,7 +25,7 @@ param set-default NAV_FW_ALT_RAD 1000
 # but also include 1+2 as they form together one output group
 # and need to be set together.
 #
-set PWM_OUT 1234
+#set PWM_OUT 1234
 
 #
 # PWM Hz - 50 Hz is the normal rate in RC cars, higher rates
@@ -37,4 +37,5 @@ set PWM_MAIN_RATE 50
 # This is the gimbal pass mixer.
 #
 set MIXER_AUX pass
+set PWM_AUX_RATE 400
 set PWM_AUX_OUT 1234
