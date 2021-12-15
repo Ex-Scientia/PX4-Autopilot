@@ -1,6 +1,6 @@
 ############################################################################
 #
-#   Copyright (c) 2017 PX4 Development Team. All rights reserved.
+#   Copyright (c) 2015-2019 PX4 Development Team. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -31,16 +31,20 @@
 #
 ############################################################################
 
-add_subdirectory(bmp280)
-add_subdirectory(bmp388)
-add_subdirectory(dps310)
-add_subdirectory(lps22hb)
-#add_subdirectory(lps25h) # not ready for general inclusion
-add_subdirectory(lps33hw)
-#add_subdirectory(mpl3115a2) # not ready for general inclusion
-add_subdirectory(maiertek)
-add_subdirectory(ms5611)
-add_subdirectory(ms5837)
-add_subdirectory(bar100)
-#add_subdirectory(tcbp001ta) # only for users who really need this
-
+px4_add_module(
+	MODULE drivers__barometer__bar100
+	MAIN bar100
+	COMPILE_FLAGS
+		-Wno-cast-align # TODO: fix and enable
+	SRCS
+		bar100_spi.cpp
+		bar100_i2c.cpp
+		bar100.cpp
+		bar100_main.cpp
+		BAR100.hpp
+	DEPENDS
+		cdev
+		drivers__device
+		drivers_barometer
+		px4_work_queue
+	)
