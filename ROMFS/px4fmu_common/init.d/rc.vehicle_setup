@@ -190,12 +190,16 @@ then
 	fi
 
 	param set MAV_TYPE ${MAV_TYPE}
-	# Load mixer and configure outputs.
+  # Load mixer and configure outputs.
 	. ${R}etc/init.d/rc.interface
 
+  if [ $MIXER = uuv_ballast ]
+  then
+    . ${R}etc/init.d/rc.uuv_ballast_apps
+  else
 	# Start standard vtol apps.
-	. ${R}etc/init.d/rc.uuv_apps
-
+	  . ${R}etc/init.d/rc.uuv_apps
+  fi
 fi
 
 

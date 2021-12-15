@@ -16,7 +16,7 @@
 . ${R}etc/init.d/rc.rover_defaults
 
 
-param set-default BAT1_N_CELLS 2
+####param set-default BAT1_N_CELLS 2
 
 param set-default EKF2_ANGERR_INIT 0.01
 param set-default EKF2_GBIAS_INIT 0.01
@@ -45,13 +45,14 @@ param set-default MIS_TAKEOFF_ALT 0.01
 param set-default NAV_ACC_RAD 0.5
 
 # Provide ESC a constant 1500 us pulse
-param set-default PWM_MAIN_DISARM 1500
-param set-default PWM_MAIN_MAX 2000
-param set-default PWM_MAIN_MIN 1000
+####param set-default PWM_MAIN_DISARM 1500
+####param set-default PWM_MAIN_MAX 2000
+####param set-default PWM_MAIN_MIN 1000
 # Configure this as rover
 set MAV_TYPE 10
 
 # Set mixer
-set MIXER rover_generic
+###set MIXER rover_generic
+set MIXER AETRFG
 
-set PWM_MAIN_REV2 1
+####set PWM_MAIN_REV2 1

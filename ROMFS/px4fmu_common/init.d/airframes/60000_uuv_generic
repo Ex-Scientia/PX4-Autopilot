@@ -23,4 +23,5 @@ param set-default CBRK_AIRSPD_CHK 162128
 set MAV_TYPE 12
 param set MAV_TYPE ${MAV_TYPE}
 
-set MIXER uuv_x
+#set MIXER uuv_x
+set MIXER uuv_ballast_sub

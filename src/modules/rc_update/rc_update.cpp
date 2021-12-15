@@ -701,23 +701,24 @@ void RCUpdate::UpdateManualSetpoint(const hrt_abstime &timestamp_sample)
 	actuator_group_3.control[3] = manual_control_setpoint.z;
 	actuator_group_3.control[4] = manual_control_setpoint.flaps;
 
-	float new_aux_values[3];
+	float new_aux_values[4];
 	new_aux_values[0] = manual_control_setpoint.aux1;
 	new_aux_values[1] = manual_control_setpoint.aux2;
 	new_aux_values[2] = manual_control_setpoint.aux3;
+	new_aux_values[3] = manual_control_setpoint.aux4;
 
 	// if AUX RC was already active, we update. otherwise, we check
 	// if there is a major stick movement to re-activate RC mode
-	bool major_movement[3] = {false, false, false};
+	bool major_movement[4] = {false, false, false, false};
 
 	// detect a big stick movement
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		if (fabsf(_last_manual_control_setpoint[i] - new_aux_values[i]) > 0.1f) {
 			major_movement[i] = true;
 		}
 	}
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		// if someone else (DO_SET_ACTUATOR) updated the actuator control
 		// and we haven't had a major movement, switch back to automatic control
 		if ((fabsf(_last_manual_control_setpoint[i] - actuator_group_3.control[5 + i])

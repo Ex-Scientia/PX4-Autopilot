@@ -228,7 +228,13 @@ void UUVAttitudeControl::Run()
 	}
 
 	perf_begin(_loop_perf);
-
+ 
+ //*******************************************
+ // SUBSCRIBING TO UORB CUSTOM VDAS MESSAGE
+ // _vdas_vehicle_status_sub.update(&_vdas_vehicle_status);
+ // printf("******************* VDAS SUBSCRIBE IN FW MODE%d\n", _vdas_vehicle_status.vdas_in_fw_mode);
+ //*******************************************
+ 
 	/* check vehicle control mode for changes to publication state */
 	_vcontrol_mode_sub.update(&_vcontrol_mode);
 
@@ -243,9 +249,14 @@ void UUVAttitudeControl::Run()
 		_angular_velocity_sub.copy(&angular_velocity);
 
 		/* Run geometric attitude controllers if NOT manual mode*/
-		if (!_vcontrol_mode.flag_control_manual_enabled
+		/*if (!_vcontrol_mode.flag_control_manual_enabled
 		    && _vcontrol_mode.flag_control_attitude_enabled
 		    && _vcontrol_mode.flag_control_rates_enabled) {
+    */
+    //REMOVING MANUAL ENABLED CONDITION BECAUSE STABILIZED MODE 
+    //IS ALSO MANUAL ENABLED TRUE
+      if (_vcontrol_mode.flag_control_attitude_enabled 
+          && _vcontrol_mode.flag_control_rates_enabled) {
 
 			int input_mode = _param_input_mode.get();
 
@@ -278,7 +289,7 @@ void UUVAttitudeControl::Run()
 	if (_manual_control_setpoint_sub.update(&_manual_control_setpoint)) {
 		// This should be copied even if not in manual mode. Otherwise, the poll(...) call will keep
 		// returning immediately and this loop will eat up resources.
-		if (_vcontrol_mode.flag_control_manual_enabled && !_vcontrol_mode.flag_control_rates_enabled) {
+    if (_vcontrol_mode.flag_control_manual_enabled && !_vcontrol_mode.flag_control_rates_enabled) {
 			/* manual/direct control */
 			constrain_actuator_commands(_manual_control_setpoint.y, -_manual_control_setpoint.x,
 						    _manual_control_setpoint.r,

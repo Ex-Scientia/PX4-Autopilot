@@ -277,6 +277,8 @@ RoverPositionControl::control_position(const matrix::Vector2d &current_position,
 
 		switch (_pos_ctrl_state) {
 		case GOTO_WAYPOINT: {
+			//printf("***************************IN WAYPOINT DIST_TARGET: %f\n", double(dist_target));
+			//printf("***************************IN WAYPOINT PARAM_NAV_LOITER_RAD: %f\n", double(_param_nav_loiter_rad.get()));
 				if (dist_target < _param_nav_loiter_rad.get()) {
 					_pos_ctrl_state = STOPPING;  // We are closer than loiter radius to waypoint, stop.
 
@@ -302,6 +304,7 @@ RoverPositionControl::control_position(const matrix::Vector2d &current_position,
 				float dist_between_waypoints = get_distance_to_next_waypoint((double)_prev_wp(0), (double)_prev_wp(1),
 							       (double)curr_wp(0), (double)curr_wp(1));
 
+				//printf("***************************IN STOPPING DIST BETWEEN WAYPOINTS: %f\n", double(dist_between_waypoints));
 				if (dist_between_waypoints > 0) {
 					_pos_ctrl_state = GOTO_WAYPOINT; // A new waypoint has arrived go to it
 				}
@@ -320,6 +323,12 @@ RoverPositionControl::control_position(const matrix::Vector2d &current_position,
 
 	} else {
 		_control_mode_current = UGV_POSCTRL_MODE_OTHER;
+		setpoint = false;
+	}
+
+	if (_vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_LAND) {
+		_act_controls.control[actuator_controls_s::INDEX_YAW] = 0.0f;
+		_act_controls.control[actuator_controls_s::INDEX_THROTTLE] = 0.0f;
 		setpoint = false;
 	}
 
@@ -368,6 +377,12 @@ RoverPositionControl::control_velocity(const matrix::Vector3f &current_velocity)
 		_act_controls.control[actuator_controls_s::INDEX_THROTTLE] = 0.0f;
 		_act_controls.control[actuator_controls_s::INDEX_YAW] = 0.0f;
 	}
+
+	if (_vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_LAND) {
+		_act_controls.control[actuator_controls_s::INDEX_YAW] = 0.0f;
+		_act_controls.control[actuator_controls_s::INDEX_THROTTLE] = 0.0f;
+	}
+
 }
 
 void
@@ -386,6 +401,10 @@ RoverPositionControl::control_attitude(const vehicle_attitude_s &att, const vehi
 
 	_act_controls.control[actuator_controls_s::INDEX_THROTTLE] =  math::constrain(control_throttle, 0.0f, 1.0f);
 
+	if (_vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_LAND) {
+		_act_controls.control[actuator_controls_s::INDEX_YAW] = 0.0f;
+		_act_controls.control[actuator_controls_s::INDEX_THROTTLE] = 0.0f;
+	}
 }
 
 void
@@ -393,8 +412,23 @@ RoverPositionControl::Run()
 {
 	parameters_update(true);
 
+	_vehicle_status_sub.update(&_vehicle_status);
+
 	/* run controller on gyro changes */
 	vehicle_angular_velocity_s angular_velocity;
+
+	//printf("***************************OFFBOARD ENABLED IS: %d\n", _control_mode.flag_control_offboard_enabled);
+	//printf("***************************POSITION CONTROL ENABLED IS: %d\n", _control_mode.flag_control_position_enabled);
+	//printf("***************************ATTITUDE CONTROL ENABLED IS: %d\n", _control_mode.flag_control_attitude_enabled);
+	//printf("***************************VELOCITY CONTROL ENABLED IS: %d\n", _control_mode.flag_control_velocity_enabled);
+	//printf("***************************MANUAL CONTROL ENABLED IS: %d\n",  _control_mode.flag_control_manual_enabled);
+	//printf("***************************POS SP LAT: %f\n", _pos_sp_triplet.current.lat);
+	//printf("***************************POS SP LON: %f\n", _pos_sp_triplet.current.lon);
+	//printf("***************************TRAJ SP X: %f\n", double(_trajectory_setpoint.x));
+	//printf("***************************TRAJ SP Y: %f\n", double(_trajectory_setpoint.y));
+	//printf("***************************GLOBAL POSITION LAT: %f\n", _global_pos.lat);
+	//printf("***************************GLOBAL POSITION LON: %f\n", _global_pos.lon);
+	//printf("***********************************************************************");
 
 	if (_vehicle_angular_velocity_sub.update(&angular_velocity)) {
 
